@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Furano Corp Impostor Made By Deikoos</title>
+  <style>
+    body {
+      background: linear-gradient(to bottom, #ff0000, #ffffff);
+      font-family: 'Arial', sans-serif;
+      color: #fff;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #a30000;
+      padding: 20px;
+    }
+    h1 {
+      margin: 0;
+      font-size: 2.5em;
+    }
+    .character-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 20px;
+      padding: 30px;
+    }
+    .character {
+      background-color: #8b0000;
+      border-radius: 10px;
+      padding: 15px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    .character:hover {
+      transform: scale(1.05);
+    }
+    .character img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 3px solid white;
+    }
+    .character-name {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    .result {
+      font-size: 1.5em;
+      margin-top: 20px;
+      color: black;
+    }
+    .hint {
+      background-color: #fff3f3;
+      color: #800000;
+      padding: 10px;
+      border-radius: 10px;
+      margin: 20px auto;
+      max-width: 500px;
+      font-weight: bold;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #a30000;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1em;
+      margin-top: 10px;
+    }
+    button:hover {
+      background-color: #cc0000;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Furano Corp Impostor Made By Deikoos</h1>
+    <p>You are the detective. Click on the person you think is the impostor!</p>
+  </header>
+
+  <div class="hint" id="hintBox">Click the button to receive a hint.</div>
+  <button onclick="showHint()">Get Hint</button>
+
+  <div class="character-grid" id="characterGrid"></div>
+  <div class="result" id="result"></div>
+
+  <script>
+    const suspects = [
+      { name: "Jared", img: "https://robohash.org/jared" },
+      { name: "Botex", img: "https://robohash.org/botex" },
+      { name: "Deikosz", img: "https://robohash.org/deikosz" },
+      { name: "IvanXD", img: "https://robohash.org/ivanxd" },
+      { name: "Benk", img: "https://robohash.org/benk" },
+      { name: "Jaee", img: "https://robohash.org/jaee" },
+      { name: "Gusi", img: "https://robohash.org/gusi" },
+      { name: "Vole", img: "https://robohash.org/vole" },
+    ];
+
+    const impostor = "Vole";
+    const hints = [
+      "El impostor tiene un nombre corto de 4 letras.",
+      "Su avatar parece más ciruja o amenazante que el resto.",
+      "Está en la parte inferior de la lista... quizás al final.",
+      "Su nombre es horrible y feo xd.",
+      "No es Jared, ni IvanXD, ni Gusi. Es un homosexual...",
+      "Le mide 2 cm"
+    ];
+
+    let hintIndex = 0;
+
+    const grid = document.getElementById("characterGrid");
+    const resultDiv = document.getElementById("result");
+    const hintBox = document.getElementById("hintBox");
+
+    function showHint() {
+      if (hintIndex < hints.length) {
+        hintBox.textContent = hints[hintIndex];
+        hintIndex++;
+      } else {
+        hintBox.textContent = "Buena dsuerte, detective del orto";
+      }
+    }
+
+    suspects.forEach((s) => {
+      const div = document.createElement("div");
+      div.className = "character";
+      div.innerHTML = `
+        <img src="${s.img}" alt="${s.name}" />
+        <div class="character-name">${s.name}</div>
+      `;
+      div.addEventListener("click", () => {
+        if (s.name === impostor) {
+          resultDiv.textContent = `✅ Correctoo! ${s.name} es el impostor ganaste wacho.`;
+        } else {
+          resultDiv.textContent = `❌ Equivocadooo! ${s.name} el no era el impostor :c.`;
+        }
+      });
+      grid.appendChild(div);
+    });
+  </script>
+</body>
+</html>
