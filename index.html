@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Furano Corp Impostor Made By Deikoos</title>
+  <style>
+    body {
+      background: linear-gradient(to bottom, #000000, #1a0000);
+      font-family: 'Arial', sans-serif;
+      color: #fff;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #a30000;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+    }
+    header img {
+      width: 60px;
+      height: 60px;
+    }
+    h1 {
+      margin: 0;
+      font-size: 2em;
+    }
+    .reward-text {
+      font-size: 0.9em;
+      color: #fff;
+      margin-top: 5px;
+    }
+    .character-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 20px;
+      padding: 30px;
+    }
+    .character {
+      background-color: #8b0000;
+      border-radius: 10px;
+      padding: 15px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    .character:hover {
+      transform: scale(1.05);
+    }
+    .character img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 3px solid white;
+    }
+    .character-name {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    .result {
+      font-size: 1.5em;
+      margin-top: 20px;
+      color: white;
+    }
+    .hint {
+      background-color: #330000;
+      color: #ffcccc;
+      padding: 10px;
+      border-radius: 10px;
+      margin: 20px auto;
+      max-width: 500px;
+      font-weight: bold;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #a30000;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1em;
+      margin-top: 10px;
+    }
+    button:hover {
+      background-color: #cc0000;
+    }
+    .footer-text {
+      color: white;
+      margin-top: 30px;
+      font-size: 1.2em;
+    }
+    .alert {
+      background: #222;
+      color: #fff;
+      border: 2px solid #a30000;
+      padding: 20px;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 999;
+      border-radius: 10px;
+    }
+    .alert button {
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="/mnt/data/ed82d1a7-87c5-4d06-8182-2886a3eb48fe.webp" alt="Logo" />
+    <div>
+      <h1>Furano Corp Impostor Made By Deikoos</h1>
+      <div class="reward-text">EL PRIMERO EN MANDAR CAPTURA DE QUE GANÓ POR DISCORD, SE LLEVA 100 ROBUX $</div>
+    </div>
+  </header>
+
+  <p>Eres el detective. Haz clic en la persona que crees que es el impostor jeje </p>
+  <div class="hint" id="hintBox">Haz clic en el botón para recibir 2 pistas.</div>
+  <button onclick="showHints()">Obtener pistas</button>
+
+  <div class="character-grid" id="characterGrid"></div>
+  <div class="result" id="result"></div>
+
+  <script>
+    const suspects = [
+      "Jared", "Botex", "Deikosz", "IvanXD", "Benk", "Jaee", "Gusi", "Vole",
+      "Mark", "Magnize", "Bon", "Gantito", "Ae", "Benja", "Santi", "Woos",
+      "Willow", "Nix", "Fercita", "Scarleth", "Milz", "Lizz", "Like", "Kasie"
+    ].sort(() => Math.random() - 0.5).map(name => {
+      const style = Math.random() < 0.5 ? 'set1' : 'set4';
+      return {
+        name,
+        img: `https://robohash.org/${name}?set=${style}`
+      };
+    });
+
+    const impostorObj = suspects[Math.floor(Math.random() * suspects.length)];
+    const impostor = impostorObj.name;
+
+    const hints = [
+      "Su nombre contiene más de 4 letras.",
+      "El impostor fue agregado recientemente.",
+      "No es mujer.",
+      "El impostor tiene una letra N en su nombre.",
+      "No tiene más de 3 letras.",
+      "Su nombre no contiene la letra A.",
+      "Está entre los personajes masculinos.",
+      "No es Woos ni Benk ni Jared.",
+      "Tiene una B al inicio.",
+      "Su nombre termina con N.",
+      "Es un personaje con nombre corto.",
+      "No tiene la letra Z en su nombre.",
+      "No es uno de los nombres femeninos.",
+      "Su nombre comienza con vocal.",
+      "Es uno de los nuevos sospechosos agregados.",
+      "Tiene doble letra en su nombre.",
+      "Su nombre tiene exactamente 5 letras.",
+      "Su nombre suena amistoso."
+    ];
+
+    const grid = document.getElementById("characterGrid");
+    const resultDiv = document.getElementById("result");
+    const hintBox = document.getElementById("hintBox");
+
+    function showHints() {
+      const randomHints = hints.sort(() => Math.random() - 0.5).slice(0, 2);
+      hintBox.textContent = randomHints.join("\n\n");
+    }
+
+    function showAlert(msg) {
+      const alertBox = document.createElement('div');
+      alertBox.className = 'alert';
+      alertBox.innerHTML = `<div>${msg}</div><button onclick="this.parentNode.remove()">Cerrar</button>`;
+      document.body.appendChild(alertBox);
+    }
+
+    suspects.forEach((s) => {
+      const div = document.createElement("div");
+      div.className = "character";
+      div.innerHTML = `
+        <img src="${s.img}" alt="${s.name}" />
+        <div class="character-name">${s.name}</div>
+      `;
+      div.addEventListener("click", () => {
+        if (s.name === impostor) {
+          showAlert(`✅ ¡Correcto! ${s.name} es el impostor.`);
+        } else {
+          showAlert(`❌ ¡Incorrecto! ${s.name} no es el impostor.`);
+        }
+      });
+      grid.appendChild(div);
+    });
+  </script>
+</body>
+</html>
